@@ -1,6 +1,6 @@
 # modbussy
 
-`modbussy` is a command line to work with modbus networks. You can define datapoints which are then read from modbus servers. It's a small little utility to quickly make sense of modbus devices.
+`modbussy` is a command line to work with modbus networks. You can define datapoints which are then read from modbus servers. It's a little utility for modbus.
 
 ## Installing
 
@@ -23,8 +23,13 @@ Run `modbussy` by executing the command `modbussy`. Easy!
 
 ### Configuration
 
-The first screen lets you configure the connection to modbus. You can connect via RTU, TCP, RTU via TCP, or RTU via UDP.
-If you choose RTU you can specify the address, data rate, parity, the number of start and stop bits.
+The first screen lets you configure the connection to modbus. You can connect via 
+- RTU
+- TCP
+- RTU via TCP
+- or RTU via UDP.
+
+Then specify the address and optionally the data rate, parity, the number of start and stop bits.
 
 ### Main UI
 
