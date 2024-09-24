@@ -16,9 +16,10 @@ before:
     - go generate ./...
 
 builds:
-  - ldflags:
+  - 
+    ldflags:
       - -s -w -X main.Version={{.Version}}
-  - env:
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -47,7 +48,6 @@ changelog:
       - "^docs:"
       - "^test:"
 
-# .goreleaser.yaml
 brews:
   -
     name: modbussy
