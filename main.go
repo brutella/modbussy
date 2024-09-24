@@ -30,6 +30,7 @@ func main() {
 	dataBits := flag.Uint("databits", 8, "RTU Data Bits")
 	parity := flag.String("parity", "E", "RTU Parity; either E(ven), N(one), O(dd)")
 	stopBits := flag.Uint("stopbits", 1, "RTU Stop Bits")
+	flag.Parse()
 
 	n := len(os.Args)
 	if os.Args[n-1] == "version" {
@@ -42,8 +43,6 @@ func main() {
 		dirname, _ := os.UserHomeDir()
 		dbFilePath = filepath.Join(dirname, dbFilePath[2:])
 	}
-
-	flag.Parse()
 
 	// Read the stored data
 	stg := storage{
@@ -116,6 +115,7 @@ func main() {
 		if err != nil {
 			logError(err)
 		} else {
+			create(dbFilePath)
 			err = os.WriteFile(dbFilePath, buf, 0644)
 			if err != nil {
 				logError(err)
@@ -123,6 +123,13 @@ func main() {
 		}
 		os.Exit(1)
 	}
+}
+
+func create(p string) (*os.File, error) {
+	if err := os.MkdirAll(filepath.Dir(p), 0770); err != nil {
+		return nil, err
+	}
+	return os.Create(p)
 }
 
 // logError renders an error based on the current theme.
