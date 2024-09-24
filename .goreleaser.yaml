@@ -123,13 +123,7 @@ brews:
       # Repository name.
       #
       # Templates: allowed.
-      name: modbussy
-
-      # Optionally a branch can be provided.
-      #
-      # Default: default repository branch.
-      # Templates: allowed.
-      branch: release
+      name: homebrew-modbussy
 
       # Optionally a token can be provided, if it differs from the token
       # provided to GoReleaser
@@ -147,4 +141,4 @@ brews:
         enabled: true
 
         # Whether to open the PR as a draft or not.
-        draft: true
+        draft: false
