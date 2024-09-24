@@ -6,24 +6,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/brutella/modbussy/ui"
 	"github.com/simonvetter/modbus"
 )
 
 type storage struct {
-	Datapoints []*ui.Datapoint         `json:"datapoints"`
-	Modbus     *ui.ModbusConfiguration `json:"modbus"`
+	Datapoints []*ui.Datapoint         `json:"datapoints,omitempty"`
+	Modbus     *ui.ModbusConfiguration `json:"modbus,omitempty"`
 }
 
 func main() {
-	dbFlag := flag.String("db", ".modbussy", "Path to database file")
+	dbFlag := flag.String("db", "~/.modbussy", "Path to database file")
 	transportFlag := flag.String("transport", "", "Transport type (either rtu, tcp, rtuovertcp, or rtuoverudp)")
 	addressFlag := flag.String("address", "", "Address of modbus server")
 	baudRate := flag.Uint("baudrate", 19200, "RTU Baudrate")
 	dataBits := flag.Uint("databits", 8, "RTU Data Bits")
 	parity := flag.String("parity", "E", "RTU Parity; either E(ven), N(one), O(dd)")
 	stopBits := flag.Uint("stopbits", 1, "RTU Stop Bits")
+
+	dbFilePath := *dbFlag
+	if strings.HasPrefix(dbFilePath, "~/") {
+		dirname, _ := os.UserHomeDir()
+		dbFilePath = filepath.Join(dirname, dbFilePath[2:])
+	}
 
 	flag.Parse()
 
@@ -32,7 +40,7 @@ func main() {
 		Datapoints: []*ui.Datapoint{},
 		Modbus:     &ui.ModbusConfiguration{},
 	}
-	buf, err := os.ReadFile(*dbFlag)
+	buf, err := os.ReadFile(dbFilePath)
 	if err == nil {
 		json.Unmarshal(buf, &stg)
 	}
@@ -98,7 +106,7 @@ func main() {
 		if err != nil {
 			logError(err)
 		} else {
-			err = os.WriteFile(*dbFlag, buf, 0644)
+			err = os.WriteFile(dbFilePath, buf, 0644)
 			if err != nil {
 				logError(err)
 			}
